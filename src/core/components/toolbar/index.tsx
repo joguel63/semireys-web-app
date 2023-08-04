@@ -1,5 +1,5 @@
 import { useMemo, useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { Box, Button, IconButton, Paper } from "@mui/material";
 import { Menu } from "@mui/icons-material";
 import { Images, Route } from "core/enums";
@@ -20,7 +20,15 @@ export const Toolbar: React.FC = () => {
             <Menu />
           </IconButton>
         )}
-        <img src={Images.logoSemireys} width={188.15} height={62.54} className="logo" />
+        <Link to={"/"}>
+          <img
+            src={Images.logoSemireys}
+            width={188.15}
+            height={62.54}
+            className="logo"
+            style={{ marginTop: 6}}
+          />
+        </Link>
       </Box>
 
       <Button variant="text" onClick={() => navigate(Route.Login)}>
