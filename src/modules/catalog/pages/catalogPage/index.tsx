@@ -106,9 +106,12 @@ export const CatalogPage: React.FC = () => {
         Aquí encontrarás todo lo que necesitas
       </Typography>
       <Carousel>
-        <img src={PicForCarousel()} alt="1" />
-        <img src={PicForCarousel()} alt="2" />
-        <img src={PicForCarousel()} alt="3" />
+        <img src={PicForCarousel()} alt="1" width={2000} height={400} />
+        <img src={PicForCarousel()} alt="2" width={2000} height={400} />
+        <img src={PicForCarousel()} alt="3" width={2000} height={400} />
+        <img src={PicForCarousel()} alt="3" width={2000} height={400} />
+        <img src={PicForCarousel()} alt="3" width={2000} height={400} />
+        <img src={PicForCarousel()} alt="3" width={2000} height={400} />
       </Carousel>
 
       <Typography variant="h5" align="left" color="text.secondary" sx={{ mb: 2, mr: 1, mt: 5 }}>
@@ -117,7 +120,7 @@ export const CatalogPage: React.FC = () => {
       <Divider />
       <Grid container spacing={2} my={4} rowGap={4}>
         {products.map((product) => (
-          <Grid item xs={12} sm={6} md={4} key={product.name} >
+          <Grid item xs={12} sm={6} md={4} key={product.name}>
             <Card sx={{ maxWidth: 370, margin: "0 auto" }}>
               <CardMedia component="img" height="200" image={product.image} alt={product.name} />
               <CardContent>
