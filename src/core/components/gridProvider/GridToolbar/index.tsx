@@ -22,6 +22,7 @@ export const GridToolBar: React.FC<GridToolBarProps> = ({
           endAdornment: <Search />,
         }}
         onChange={(e) => setSearch(e.target.value)}
+        fullWidth={false}
       />
       {!!onCreate && (
         <IconButton sx={styles.iconButton} onClick={onCreate}>

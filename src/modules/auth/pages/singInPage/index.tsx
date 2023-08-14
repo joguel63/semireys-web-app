@@ -1,9 +1,10 @@
 import { Box, Button, TextField, Typography } from "@mui/material";
+import { login } from "modules/auth/services/auth.services";
 import { Route } from "core/enums";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 export const SingInPage = (): JSX.Element => {
-  const [data, setData] = useState<{ email: String; password: string }>(Object({}));
+  const [data, setData] = useState<{ email: string; password: string }>(Object({}));
   const navigate = useNavigate();
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -14,7 +15,12 @@ export const SingInPage = (): JSX.Element => {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     console.log(data);
-    navigate(Route.Dashboard);
+    login(data).then(({ data }) => {
+      if (data) {
+        localStorage.setItem("token", data.data);
+        navigate(Route.Dashboard);
+      }
+    });
   };
 
   return (
@@ -36,8 +42,19 @@ export const SingInPage = (): JSX.Element => {
         component="form"
         onSubmit={handleSubmit}
       >
-        <TextField label="Correo Electronico" variant="outlined" onChange={handleChange} />
-        <TextField label="Contraseña" variant="outlined" type="password" onChange={handleChange} />
+        <TextField
+          label="Correo Electronico"
+          variant="outlined"
+          name="email"
+          onChange={handleChange}
+        />
+        <TextField
+          label="Contraseña"
+          variant="outlined"
+          type="password"
+          name="password"
+          onChange={handleChange}
+        />
         <Button variant="contained" fullWidth type="submit">
           Iniciar Sesión
         </Button>

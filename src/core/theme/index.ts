@@ -18,6 +18,13 @@ export const theme = createTheme(
           },
         },
       },
+      MuiTextField: {
+        defaultProps: {
+          variant: "outlined",
+          fullWidth: true,
+          size: "small",
+        },
+      },
       MuiDataGrid: {
         defaultProps: {
           density: "compact",
