@@ -20,7 +20,7 @@ const drawerItems: { title: string; icon: React.ReactElement; path: string }[] =
   {
     title: "Inventario",
     icon: <AccountTree />,
-    path: "/storage",
+    path: Route.ProductsGrid,
   },
 ];
 

@@ -13,11 +13,12 @@ export const EditUserComponent: React.FC<{ handleClose: () => void; userInfo: Us
   handleClose,
   userInfo,
 }) => {
-  const [data, setData] = useState<EditUser>({
-    email: userInfo.email,
-    name: userInfo.name,
-    password: "",
-  });
+  const [data, setData] = useState<EditUser>(
+    Object({
+      email: userInfo.email,
+      name: userInfo.name,
+    })
+  );
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
