@@ -1,6 +1,6 @@
 import { useMemo, useContext } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { FormatListBulleted, AccountTree, People } from "@mui/icons-material";
+import { FormatListBulleted, AccountTree, People, Category } from "@mui/icons-material";
 import { Box, List, ListItemButton, ListItemText, ListItemIcon } from "@mui/material";
 import { AppContext } from "core/context";
 import { Route } from "core/enums";
@@ -21,6 +21,11 @@ const drawerItems: { title: string; icon: React.ReactElement; path: string }[] =
     title: "Inventario",
     icon: <AccountTree />,
     path: Route.ProductsGrid,
+  },
+  {
+    title: "Categorias",
+    icon: <Category />,
+    path: Route.CategoriesGrid,
   },
 ];
 

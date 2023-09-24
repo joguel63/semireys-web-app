@@ -3,4 +3,5 @@ export enum Route {
   Dashboard = "/dashboard",
   UsersGrid = "/dashboard/user-management",
   ProductsGrid = "/dashboard/product-management",
+  CategoriesGrid = "/dashboard/category-management",
 }

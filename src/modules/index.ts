@@ -3,3 +3,4 @@ export * from "./catalog";
 export * from "./dashboard";
 export * from "./userManagement";
 export * from "./productManagement";
+export * from "./categoryManagement";

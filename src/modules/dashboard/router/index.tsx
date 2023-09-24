@@ -1,6 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import { Route as AppRoute } from "core/enums";
-import { UserManagementModule, ProductManagementModule } from "modules";
+import { UserManagementModule, ProductManagementModule, CategoryManagementModule } from "modules";
 
 const getPath = (path: AppRoute) => path.replace("/dashboard", "");
 export const RoutesProvider = () => {
@@ -8,6 +8,7 @@ export const RoutesProvider = () => {
     <Routes>
       <Route path={getPath(AppRoute.UsersGrid)} element={<UserManagementModule />} />
       <Route path={getPath(AppRoute.ProductsGrid)} element={<ProductManagementModule />} />
+      <Route path={getPath(AppRoute.CategoriesGrid)} element={<CategoryManagementModule />} />
       <Route path="/" element={<></>} />
     </Routes>
   );
