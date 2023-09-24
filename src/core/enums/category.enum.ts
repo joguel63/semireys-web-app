@@ -1,22 +1,3 @@
-/* 
-1
-camisa
-
-2
-pantalon
-	
-
-3
-franela
-
-4
-falda
-
-5
-licra
-
-*/
-
 export enum Category {
   Shirt = 1,
   Pants = 2,

@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { Box, TextField, Button, Typography } from "@mui/material";
-import { update } from "modules/productManagement/services/products.services";
-import { styles } from "./styles";
-import { Product } from "modules/productManagement/types";
+import { AppContext } from "core/context";
 import { Select } from "core/components";
 import { CategoryOptions } from "core/enums";
+import { update } from "modules/productManagement/services/products.services";
+import { Product } from "modules/productManagement/types";
+import { styles } from "./styles";
 
 type EditProduct = {
   name: string;
@@ -24,6 +25,7 @@ export const EditProductComponent: React.FC<{ handleClose: () => void; productIn
     amount: productInfo.amount,
     price_production: productInfo.price_production,
   });
+  const { setNotification } = useContext(AppContext);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -32,9 +34,12 @@ export const EditProductComponent: React.FC<{ handleClose: () => void; productIn
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    update(productInfo.id, data).then(() => {
-      handleClose();
-    });
+    update(productInfo.id, data)
+      .then(() => {
+        handleClose();
+        setNotification({ message: "Producto editado correctamente", severity: "success" });
+      })
+      .catch(() => setNotification({ message: "Error al editar el producto", severity: "error" }));
   };
 
   return (
@@ -70,7 +75,7 @@ export const EditProductComponent: React.FC<{ handleClose: () => void; productIn
       />
       <Select
         options={CategoryOptions}
-        label="Rol"
+        label="Categoria"
         name="category_id"
         onChange={handleChange}
         defaultValue={productInfo.category_id}

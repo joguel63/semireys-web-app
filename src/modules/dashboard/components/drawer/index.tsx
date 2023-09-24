@@ -31,8 +31,6 @@ export const Drawer: React.FC<DrawerProps> = ({}) => {
   const drawerWidth = useMemo(() => (openDrawer ? 240 : 64), [openDrawer]);
   const { item, root } = useStyles(drawerWidth);
 
-  console.log(openDrawer, "casa");
-
   return (
     <Box sx={root}>
       <List disablePadding>

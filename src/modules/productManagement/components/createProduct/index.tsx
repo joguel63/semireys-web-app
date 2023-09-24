@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { Box, TextField, Button, Typography } from "@mui/material";
 import { Select } from "core/components";
+import { AppContext } from "core/context";
 import { Category, CategoryOptions } from "core/enums";
 import { create } from "modules/productManagement/services/products.services";
 import { styles } from "./styles";
@@ -14,6 +15,7 @@ type NewProduct = {
 };
 export const CreateProductComponent: React.FC<{ handleClose: () => void }> = ({ handleClose }) => {
   const [data, setData] = useState<NewProduct>(Object({ category_id: Category.Shirt }));
+  const { setNotification } = useContext(AppContext);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -22,9 +24,12 @@ export const CreateProductComponent: React.FC<{ handleClose: () => void }> = ({ 
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    create(data).then(() => {
-      handleClose();
-    });
+    create(data)
+      .then(() => {
+        handleClose();
+        setNotification({ message: "Producto creado correctamente", severity: "success" });
+      })
+      .catch(() => setNotification({ message: "Error al crear el producto", severity: "error" }));
   };
 
   return (
@@ -43,7 +48,7 @@ export const CreateProductComponent: React.FC<{ handleClose: () => void }> = ({ 
       />
       <Select
         options={CategoryOptions}
-        label="Rol"
+        label="Categoria"
         name="category_id"
         defaultValue={Category.Shirt}
         onChange={handleChange}

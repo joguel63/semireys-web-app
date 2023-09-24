@@ -1,14 +1,15 @@
 import { AsyncReturnType } from "core/types";
+import { getUserInformation } from "./localStorage.utils";
 
 const baseApiURL = import.meta.env.VITE_API_URL;
 
 async function GET<T = unknown>(url: string, key?: string): AsyncReturnType<T> {
-  const token = localStorage.getItem("token");
+  const token = getUserInformation();
   try {
     const response = await fetch(baseApiURL + url, {
       method: "GET",
       headers: {
-        ...(!!token && { Authorization: `Bearer ${token}` }),
+        ...(!!token && { Authorization: `Bearer ${token.data.token}` }),
         "Content-Type": "application/json",
         Accept: "*/*",
         ...(key && { "x-api-key": key }),
@@ -28,11 +29,11 @@ async function POST<T = unknown, P = object | string | number>(
   key?: string
 ): AsyncReturnType<T> {
   try {
-    const token = localStorage.getItem("token");
+    const token = getUserInformation();
     const response = await fetch(baseApiURL + url, {
       method: "POST",
       headers: {
-        ...(!!token && { Authorization: `Bearer ${token}` }),
+        ...(!!token && { Authorization: `Bearer ${token.data.token}` }),
         "Content-Type": "application/json",
         Accept: "*/*",
         ...(key && { "x-api-key": key }),
@@ -54,11 +55,11 @@ async function PUT<T = unknown, P = object | string | number>(
   key?: string
 ): AsyncReturnType<T> {
   try {
-    const token = localStorage.getItem("token");
+    const token = getUserInformation();
     const response = await fetch(baseApiURL + url, {
       method: "PUT",
       headers: {
-        ...(!!token && { Authorization: `Bearer ${token}` }),
+        ...(!!token && { Authorization: `Bearer ${token.data.token}` }),
         ...(key && { "x-api-key": key }),
         "Content-Type": "application/json",
       },
@@ -74,11 +75,11 @@ async function PUT<T = unknown, P = object | string | number>(
 
 async function DELETE<T = unknown>(url: string, key?: string): AsyncReturnType<T> {
   try {
-    const token = localStorage.getItem("token");
+    const token = getUserInformation();
     const response = await fetch(baseApiURL + url, {
       method: "DELETE",
       headers: {
-        ...(!!token && { Authorization: `Bearer ${token}` }),
+        ...(!!token && { Authorization: `Bearer ${token.data.token}` }),
         ...(key && { "x-api-key": key }),
         "Content-type": "application/json",
       },

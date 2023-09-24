@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { Box, TextField, Button, Typography } from "@mui/material";
 import { Select } from "core/components";
+import { AppContext } from "core/context";
 import { Roles, RolesOptions } from "core/enums";
 import { create } from "modules/userManagement/services/user.services";
 import { styles } from "./styles";
@@ -13,6 +14,7 @@ type NewUser = {
 };
 export const CreateUserComponent: React.FC<{ handleClose: () => void }> = ({ handleClose }) => {
   const [data, setData] = useState<NewUser>(Object({ role_id: Roles.Admin }));
+  const { setNotification } = useContext(AppContext);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -21,9 +23,12 @@ export const CreateUserComponent: React.FC<{ handleClose: () => void }> = ({ han
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    create(data).then(() => {
-      handleClose();
-    });
+    create(data)
+      .then(() => {
+        handleClose();
+        setNotification({ message: "Usuario creado correctamente", severity: "success" });
+      })
+      .catch(() => setNotification({ message: "Error al crear el usuario", severity: "error" }));
   };
 
   return (

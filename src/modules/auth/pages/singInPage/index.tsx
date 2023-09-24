@@ -1,10 +1,13 @@
 import { Box, Button, TextField, Typography } from "@mui/material";
 import { login } from "modules/auth/services/auth.services";
 import { Route } from "core/enums";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import { setUserInformation } from "core/utils/localStorage.utils";
+import { AppContext } from "core/context";
 export const SingInPage = (): JSX.Element => {
   const [data, setData] = useState<{ email: string; password: string }>(Object({}));
+  const { setIsAuthenticated } = useContext(AppContext);
   const navigate = useNavigate();
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -14,10 +17,10 @@ export const SingInPage = (): JSX.Element => {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log(data);
     login(data).then(({ data }) => {
       if (data) {
-        localStorage.setItem("token", data.data);
+        setUserInformation(data);
+        setIsAuthenticated(true);
         navigate(Route.Dashboard);
       }
     });

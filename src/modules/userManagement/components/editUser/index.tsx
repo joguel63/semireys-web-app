@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { Box, TextField, Button, Typography } from "@mui/material";
+import { AppContext } from "core/context";
 import { update } from "modules/userManagement/services/user.services";
-import { styles } from "./styles";
 import { User } from "modules/userManagement/types";
+import { styles } from "./styles";
 
 type EditUser = {
   name: string;
@@ -19,6 +20,7 @@ export const EditUserComponent: React.FC<{ handleClose: () => void; userInfo: Us
       name: userInfo.name,
     })
   );
+  const { setNotification } = useContext(AppContext);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -27,9 +29,12 @@ export const EditUserComponent: React.FC<{ handleClose: () => void; userInfo: Us
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    update(userInfo.id, data).then(() => {
-      handleClose();
-    });
+    update(userInfo.id, data)
+      .then(() => {
+        handleClose();
+        setNotification({ message: "Usuario editado correctamente", severity: "success" });
+      })
+      .catch(() => setNotification({ message: "Error al editar el usuario", severity: "error" }));
   };
 
   return (

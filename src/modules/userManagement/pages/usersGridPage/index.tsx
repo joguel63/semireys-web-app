@@ -1,17 +1,19 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useContext } from "react";
 import { Box, IconButton, Stack, Tooltip } from "@mui/material";
 import { Delete, Edit } from "@mui/icons-material";
 import { GridColDef } from "@mui/x-data-grid";
 import { GridProvider, Modal } from "core/components";
+import { RolesLabel } from "core/enums";
+import { AppContext } from "core/context";
 import { getAll, remove } from "modules/userManagement/services/user.services";
 import { User } from "modules/userManagement/types";
 import { CreateUserComponent, EditUserComponent } from "modules/userManagement/components";
-import { RolesLabel } from "core/enums";
 
 export const UsersGridPage: React.FC = () => {
   const [rows, setRows] = useState<User[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [modalInfo, setModalInfo] = useState<{ open: boolean; data?: User }>({ open: false });
+  const { setNotification } = useContext(AppContext);
   const columns: GridColDef<User>[] = [
     { field: "id", headerName: "Id", flex: 1 },
     {
@@ -57,7 +59,12 @@ export const UsersGridPage: React.FC = () => {
   };
 
   const handleDelete = (id: number) => {
-    remove(id).then(() => fetchUsers());
+    remove(id)
+      .then(() => {
+        fetchUsers();
+        setNotification({ message: "Usuario eliminado correctamente", severity: "success" });
+      })
+      .catch(() => setNotification({ message: "Error al eliminar el usuario", severity: "error" }));
   };
 
   const fetchUsers = useCallback(() => {

@@ -1,18 +1,21 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useContext } from "react";
 import { Box, IconButton, Stack, Tooltip } from "@mui/material";
 import { Delete, Edit } from "@mui/icons-material";
 import { GridColDef } from "@mui/x-data-grid";
 import { GridProvider, Modal } from "core/components";
+import { CategoryLabel } from "core/enums";
+import { formatMoney } from "core/utils/formats";
+import { AppContext } from "core/context";
 import { getAll, remove } from "modules/productManagement/services/products.services";
 import { Product } from "modules/productManagement/types";
 import { CreateProductComponent, EditProductComponent } from "modules/productManagement/components";
-import { CategoryLabel } from "core/enums";
-import { formatMoney } from "core/utils/formats";
 
 export const ProductsGridPage: React.FC = () => {
   const [rows, setRows] = useState<Product[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [modalInfo, setModalInfo] = useState<{ open: boolean; data?: Product }>({ open: false });
+  const { setNotification } = useContext(AppContext);
+
   const columns: GridColDef<Product>[] = [
     { field: "id", headerName: "Id", flex: 1 },
     {
@@ -70,7 +73,14 @@ export const ProductsGridPage: React.FC = () => {
   };
 
   const handleDelete = (id: number) => {
-    remove(id).then(() => fetchProducts());
+    remove(id)
+      .then(() => {
+        fetchProducts();
+        setNotification({ message: "Producto eliminado correctamente", severity: "success" });
+      })
+      .catch(() =>
+        setNotification({ message: "Error al eliminar el producto", severity: "error" })
+      );
   };
 
   const fetchProducts = useCallback(() => {
