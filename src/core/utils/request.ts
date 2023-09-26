@@ -49,6 +49,25 @@ async function POST<T = unknown, P = object | string | number>(
   }
 }
 
+async function POSTFILE<T = unknown>(url: string, body: FormData): AsyncReturnType<T> {
+  try {
+    const token = getUserInformation();
+    const response = await fetch(baseApiURL + url, {
+      method: "POST",
+      headers: {
+        ...(!!token && { Authorization: `Bearer ${token.data.token}` }),
+        Accept: "*/*",
+      },
+      body: body,
+    });
+    const json: T = await response.json();
+    if (response.status <= 299) return { data: json, error: null };
+    return { data: null, error: json };
+  } catch (error) {
+    return { data: null, error: error };
+  }
+}
+
 async function PUT<T = unknown, P = object | string | number>(
   url: string,
   body: P,
@@ -73,6 +92,25 @@ async function PUT<T = unknown, P = object | string | number>(
   }
 }
 
+async function PUTFILE<T = unknown>(url: string, body: FormData): AsyncReturnType<T> {
+  try {
+    const token = getUserInformation();
+    const response = await fetch(baseApiURL + url, {
+      method: "PUT",
+      headers: {
+        ...(!!token && { Authorization: `Bearer ${token.data.token}` }),
+        Accept: "*/*",
+      },
+      body: body,
+    });
+    const json = await response.json();
+    if (response.status <= 299) return { data: json, error: null };
+    return { data: null, error: json };
+  } catch (error) {
+    return { data: null, error: error };
+  }
+}
+
 async function DELETE<T = unknown>(url: string, key?: string): AsyncReturnType<T> {
   try {
     const token = getUserInformation();
@@ -92,4 +130,4 @@ async function DELETE<T = unknown>(url: string, key?: string): AsyncReturnType<T
   }
 }
 
-export { GET, POST, PUT, DELETE };
+export { GET, POST, PUT, DELETE, POSTFILE, PUTFILE };

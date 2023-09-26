@@ -1,15 +1,15 @@
 import { useState, useContext } from "react";
 import { Box, TextField, Button, Typography } from "@mui/material";
 import { AppContext } from "core/context";
-import { create } from "core/services/category.services";
+import { create } from "core/services/tax.services";
 import { styles } from "./styles";
 
-type NewCategory = {
+type NewTax = {
   name: string;
   description: string;
 };
 export const CreateCategoryComponent: React.FC<{ handleClose: () => void }> = ({ handleClose }) => {
-  const [data, setData] = useState<NewCategory>(Object({}));
+  const [data, setData] = useState<NewTax>(Object());
   const { setNotification } = useContext(AppContext);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -22,21 +22,21 @@ export const CreateCategoryComponent: React.FC<{ handleClose: () => void }> = ({
     create(data)
       .then(() => {
         handleClose();
-        setNotification({ message: "Categoria creada correctamente", severity: "success" });
+        setNotification({ message: "Impuesto creado correctamente", severity: "success" });
       })
-      .catch(() => setNotification({ message: "Error al crear la categoria", severity: "error" }));
+      .catch(() => setNotification({ message: "Error al crear el impuesto", severity: "error" }));
   };
 
   return (
     <Box component={"form"} onSubmit={handleSubmit} sx={styles.root}>
       <Typography fontSize="24px" fontWeight="bold" textAlign="center" gutterBottom>
-        Crear Categoria
+        Crear Impuesto
       </Typography>
       <TextField label="Nombre" name="name" onChange={handleChange} />
       <TextField label="Descripcion" name="description" onChange={handleChange} />
 
       <Button variant="contained" fullWidth type="submit">
-        Crear Categoria
+        Crear Impuesto
       </Button>
     </Box>
   );

@@ -2,7 +2,7 @@ import { useState, useContext } from "react";
 import { Box, TextField, Button, Typography } from "@mui/material";
 import { AppContext } from "core/context";
 import { update } from "core/services/category.services";
-import { Category } from "core/types";
+import { Category } from "modules/categoryManagement/types";
 import { styles } from "./styles";
 
 type EditCategory = {

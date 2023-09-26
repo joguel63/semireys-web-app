@@ -1,21 +1,21 @@
 import { useState, useContext } from "react";
 import { Box, TextField, Button, Typography } from "@mui/material";
 import { AppContext } from "core/context";
-import { update } from "core/services/category.services";
-import { Category } from "core/types";
+import { update } from "core/services/tax.services";
+import { Tax } from "modules/taxManagement/types";
 import { styles } from "./styles";
 
-type EditCategory = {
+type EditTax = {
   name: string;
   description: string;
 };
 export const EditCategoryComponent: React.FC<{
   handleClose: () => void;
-  categoryInfo: Category;
-}> = ({ handleClose, categoryInfo }) => {
-  const [data, setData] = useState<EditCategory>({
-    name: categoryInfo.name,
-    description: categoryInfo.description,
+  taxInfo: Tax;
+}> = ({ handleClose, taxInfo }) => {
+  const [data, setData] = useState<EditTax>({
+    name: taxInfo.name,
+    description: taxInfo.description,
   });
   const { setNotification } = useContext(AppContext);
 
@@ -26,34 +26,29 @@ export const EditCategoryComponent: React.FC<{
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    update(categoryInfo.id, data)
+    update(taxInfo.id, data)
       .then(() => {
         handleClose();
-        setNotification({ message: "Categoria editada correctamente", severity: "success" });
+        setNotification({ message: "Impuesto editado correctamente", severity: "success" });
       })
-      .catch(() => setNotification({ message: "Error al editar la categoria", severity: "error" }));
+      .catch(() => setNotification({ message: "Error al editar el Impuesto", severity: "error" }));
   };
 
   return (
     <Box component={"form"} onSubmit={handleSubmit} sx={styles.root}>
       <Typography fontSize="24px" fontWeight="bold" textAlign="center" gutterBottom>
-        Editar Categoria
+        Editar Impuesto
       </Typography>
-      <TextField
-        label="Nombre"
-        name="name"
-        onChange={handleChange}
-        defaultValue={categoryInfo.name}
-      />
+      <TextField label="Nombre" name="name" onChange={handleChange} defaultValue={taxInfo.name} />
       <TextField
         label="Descripcion"
         name="description"
         onChange={handleChange}
-        defaultValue={categoryInfo.description}
+        defaultValue={taxInfo.description}
       />
 
       <Button variant="contained" fullWidth type="submit">
-        Editar Categoria
+        Editar Impuesto
       </Button>
     </Box>
   );

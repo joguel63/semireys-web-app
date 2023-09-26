@@ -4,20 +4,17 @@ import { Delete, Edit } from "@mui/icons-material";
 import { GridColDef } from "@mui/x-data-grid";
 import { GridProvider, Modal } from "core/components";
 import { AppContext } from "core/context";
-import { getAll, remove } from "core/services/category.services";
-import { Category } from "core/types";
-import {
-  CreateCategoryComponent,
-  EditCategoryComponent,
-} from "modules/categoryManagement/components";
+import { getAll, remove } from "modules/saleManagement/services/sale.services";
+import { Sale } from "modules/saleManagement/types";
+import { CreateSaleComponent, EditSaleComponent } from "modules/saleManagement/components";
 
-export const CategoriesGridPage: React.FC = () => {
-  const [rows, setRows] = useState<Category[]>([]);
+export const SalesGridPage: React.FC = () => {
+  const [rows, setRows] = useState<Sale[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const [modalInfo, setModalInfo] = useState<{ open: boolean; data?: Category }>({ open: false });
+  const [modalInfo, setModalInfo] = useState<{ open: boolean; data?: Sale }>({ open: false });
   const { setNotification } = useContext(AppContext);
 
-  const columns: GridColDef<Category>[] = [
+  const columns: GridColDef<Sale>[] = [
     { field: "id", headerName: "Id", flex: 1 },
     {
       field: "name",
@@ -59,11 +56,9 @@ export const CategoriesGridPage: React.FC = () => {
     remove(id)
       .then(() => {
         fetchProducts();
-        setNotification({ message: "Categoria eliminada correctamente", severity: "success" });
+        setNotification({ message: "Venta eliminada correctamente", severity: "success" });
       })
-      .catch(() =>
-        setNotification({ message: "Error al eliminar la categoria", severity: "error" })
-      );
+      .catch(() => setNotification({ message: "Error al eliminar la venta", severity: "error" }));
   };
 
   const fetchProducts = useCallback(() => {
@@ -79,12 +74,12 @@ export const CategoriesGridPage: React.FC = () => {
   return (
     <Box paddingX={5} paddingTop={5}>
       <GridProvider
-        title="Gestión de Categorias"
+        title="Gestión de Ventas"
         rows={rows}
         columns={columns}
         initialState={{ pagination: { paginationModel: { pageSize: 10 } } }}
         pageSizeOptions={[10, 20, 40, 60, 80, 100]}
-        searchPlaceHolder="Buscar Categoria"
+        searchPlaceHolder="Buscar Venta"
         onCreate={() => setModalInfo({ data: undefined, open: true })}
         loading={loading}
       />
@@ -94,9 +89,9 @@ export const CategoriesGridPage: React.FC = () => {
         closeButton
       >
         {modalInfo.data ? (
-          <EditCategoryComponent handleClose={handleClose} categoryInfo={modalInfo.data} />
+          <EditSaleComponent handleClose={handleClose} saleInfo={modalInfo.data} />
         ) : (
-          <CreateCategoryComponent handleClose={handleClose} />
+          <CreateSaleComponent handleClose={handleClose} />
         )}
       </Modal>
     </Box>

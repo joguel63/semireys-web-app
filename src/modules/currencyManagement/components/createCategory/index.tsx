@@ -1,6 +1,7 @@
 import { useState, useContext } from "react";
 import { Box, TextField, Button, Typography } from "@mui/material";
 import { AppContext } from "core/context";
+import { Category } from "core/enums";
 import { create } from "core/services/category.services";
 import { styles } from "./styles";
 
@@ -9,7 +10,7 @@ type NewCategory = {
   description: string;
 };
 export const CreateCategoryComponent: React.FC<{ handleClose: () => void }> = ({ handleClose }) => {
-  const [data, setData] = useState<NewCategory>(Object({}));
+  const [data, setData] = useState<NewCategory>(Object({ category_id: Category.Shirt }));
   const { setNotification } = useContext(AppContext);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {

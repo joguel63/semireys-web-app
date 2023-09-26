@@ -4,20 +4,17 @@ import { Delete, Edit } from "@mui/icons-material";
 import { GridColDef } from "@mui/x-data-grid";
 import { GridProvider, Modal } from "core/components";
 import { AppContext } from "core/context";
-import { getAll, remove } from "core/services/category.services";
-import { Category } from "core/types";
-import {
-  CreateCategoryComponent,
-  EditCategoryComponent,
-} from "modules/categoryManagement/components";
+import { getAll, remove } from "core/services/tax.services";
+import { Tax } from "modules/taxManagement/types";
+import { CreateCategoryComponent, EditCategoryComponent } from "modules/taxManagement/components";
 
-export const CategoriesGridPage: React.FC = () => {
-  const [rows, setRows] = useState<Category[]>([]);
+export const TaxesGridPage: React.FC = () => {
+  const [rows, setRows] = useState<Tax[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const [modalInfo, setModalInfo] = useState<{ open: boolean; data?: Category }>({ open: false });
+  const [modalInfo, setModalInfo] = useState<{ open: boolean; data?: Tax }>({ open: false });
   const { setNotification } = useContext(AppContext);
 
-  const columns: GridColDef<Category>[] = [
+  const columns: GridColDef<Tax>[] = [
     { field: "id", headerName: "Id", flex: 1 },
     {
       field: "name",
@@ -59,10 +56,10 @@ export const CategoriesGridPage: React.FC = () => {
     remove(id)
       .then(() => {
         fetchProducts();
-        setNotification({ message: "Categoria eliminada correctamente", severity: "success" });
+        setNotification({ message: "Impuesto eliminado correctamente", severity: "success" });
       })
       .catch(() =>
-        setNotification({ message: "Error al eliminar la categoria", severity: "error" })
+        setNotification({ message: "Error al eliminar el impuesto", severity: "error" })
       );
   };
 
@@ -79,12 +76,12 @@ export const CategoriesGridPage: React.FC = () => {
   return (
     <Box paddingX={5} paddingTop={5}>
       <GridProvider
-        title="Gestión de Categorias"
+        title="Gestión de Impuestos"
         rows={rows}
         columns={columns}
         initialState={{ pagination: { paginationModel: { pageSize: 10 } } }}
         pageSizeOptions={[10, 20, 40, 60, 80, 100]}
-        searchPlaceHolder="Buscar Categoria"
+        searchPlaceHolder="Buscar Impuesto"
         onCreate={() => setModalInfo({ data: undefined, open: true })}
         loading={loading}
       />
@@ -94,7 +91,7 @@ export const CategoriesGridPage: React.FC = () => {
         closeButton
       >
         {modalInfo.data ? (
-          <EditCategoryComponent handleClose={handleClose} categoryInfo={modalInfo.data} />
+          <EditCategoryComponent handleClose={handleClose} taxInfo={modalInfo.data} />
         ) : (
           <CreateCategoryComponent handleClose={handleClose} />
         )}

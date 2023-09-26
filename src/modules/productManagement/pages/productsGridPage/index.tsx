@@ -3,12 +3,12 @@ import { Box, IconButton, Stack, Tooltip } from "@mui/material";
 import { Delete, Edit } from "@mui/icons-material";
 import { GridColDef } from "@mui/x-data-grid";
 import { GridProvider, Modal } from "core/components";
-import { CategoryLabel } from "core/enums";
 import { formatMoney } from "core/utils/formats";
 import { AppContext } from "core/context";
 import { getAll, remove } from "modules/productManagement/services/products.services";
 import { Product } from "modules/productManagement/types";
 import { CreateProductComponent, EditProductComponent } from "modules/productManagement/components";
+import { ProductContextProvider } from "modules/productManagement/context";
 
 export const ProductsGridPage: React.FC = () => {
   const [rows, setRows] = useState<Product[]>([]);
@@ -31,20 +31,25 @@ export const ProductsGridPage: React.FC = () => {
     {
       field: "category_id",
       headerName: "Categoria",
-      renderCell: ({ row }) => CategoryLabel.get(row.category_id),
+      renderCell: ({ row }) => row.category?.name,
       flex: 1,
     },
     {
       field: "amount",
       flex: 1,
-      renderCell: ({ row }) => formatMoney(row.amount),
-      headerName: "Precio de Venta",
+      headerName: "Cantidad",
     },
     {
       field: "price_production",
       flex: 1,
       renderCell: ({ row }) => formatMoney(row.price_production),
       headerName: "Precio de Produccion",
+    },
+    {
+      field: "value",
+      flex: 1,
+      renderCell: ({ row }) => formatMoney(row.value),
+      headerName: "Precio de Venta",
     },
     {
       field: "actions",
@@ -94,28 +99,30 @@ export const ProductsGridPage: React.FC = () => {
   useEffect(() => fetchProducts(), [fetchProducts]);
 
   return (
-    <Box paddingX={5} paddingTop={5}>
-      <GridProvider
-        title="Gestión de Inventario"
-        rows={rows}
-        columns={columns}
-        initialState={{ pagination: { paginationModel: { pageSize: 10 } } }}
-        pageSizeOptions={[10, 20, 40, 60, 80, 100]}
-        searchPlaceHolder="Buscar Producto"
-        onCreate={() => setModalInfo({ data: undefined, open: true })}
-        loading={loading}
-      />
-      <Modal
-        open={modalInfo.open}
-        onClose={() => setModalInfo({ data: undefined, open: false })}
-        closeButton
-      >
-        {modalInfo.data ? (
-          <EditProductComponent handleClose={handleClose} productInfo={modalInfo.data} />
-        ) : (
-          <CreateProductComponent handleClose={handleClose} />
-        )}
-      </Modal>
-    </Box>
+    <ProductContextProvider>
+      <Box paddingX={5} paddingTop={5}>
+        <GridProvider
+          title="Gestión de Inventario"
+          rows={rows}
+          columns={columns}
+          initialState={{ pagination: { paginationModel: { pageSize: 10 } } }}
+          pageSizeOptions={[10, 20, 40, 60, 80, 100]}
+          searchPlaceHolder="Buscar Producto"
+          onCreate={() => setModalInfo({ data: undefined, open: true })}
+          loading={loading}
+        />
+        <Modal
+          open={modalInfo.open}
+          onClose={() => setModalInfo({ data: undefined, open: false })}
+          closeButton
+        >
+          {modalInfo.data ? (
+            <EditProductComponent handleClose={handleClose} productInfo={modalInfo.data} />
+          ) : (
+            <CreateProductComponent handleClose={handleClose} />
+          )}
+        </Modal>
+      </Box>
+    </ProductContextProvider>
   );
 };
