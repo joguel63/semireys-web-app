@@ -1,2 +1,2 @@
-import { SalesGridPage } from "modules/saleManagement/pages";
-export const SaleManagementModule = (): JSX.Element => <SalesGridPage />;
+import { RoutesProvider } from "modules/saleManagement/router";
+export const SaleManagementModule = (): JSX.Element => <RoutesProvider />;

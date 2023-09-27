@@ -1,8 +1,14 @@
 import { SelectType } from "core/types";
 
 export const toSelect = <T extends Record<string, any>[] = { name: string; id: string | number }[]>(
-  array: T
+  array: T,
+  keys?: { label?: string; value: string }
 ): SelectType[] => {
+  if (keys)
+    return array.map((item) => ({
+      label: item[keys.label || "name"],
+      value: item[keys.value],
+    })) as SelectType[];
   const options = array.map((item) => ({ label: item.name, value: item.id })) as SelectType[];
   return options;
 };

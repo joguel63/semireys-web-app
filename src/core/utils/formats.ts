@@ -4,3 +4,10 @@ export const formatMoney = (amount: number | undefined) => {
   }
   return 0;
 };
+
+export const formatDate = (date: Date | undefined) => {
+  if (date) {
+    return new Date(date).toLocaleDateString();
+  }
+  return "";
+};

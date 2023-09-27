@@ -1,2 +1,2 @@
-export * from "./createSale";
-export * from "./editSale";
+export * from "./addProduct";
+export * from "./editProduct";

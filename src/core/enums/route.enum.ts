@@ -7,4 +7,6 @@ export enum Route {
   CurrencyGrid = "/dashboard/currency-management",
   SalesGrid = "/dashboard/sales-management",
   TaxesGrid = "/dashboard/taxes-management",
+  CreateSale = "/dashboard/sales-management/create",
+  EditSale = "/dashboard/sales-management/edit",
 }

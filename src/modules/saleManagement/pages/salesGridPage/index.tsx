@@ -1,30 +1,53 @@
 import { useEffect, useState, useCallback, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import { Box, IconButton, Stack, Tooltip } from "@mui/material";
 import { Delete, Edit } from "@mui/icons-material";
 import { GridColDef } from "@mui/x-data-grid";
-import { GridProvider, Modal } from "core/components";
+import { GridProvider } from "core/components";
 import { AppContext } from "core/context";
 import { getAll, remove } from "modules/saleManagement/services/sale.services";
 import { Sale } from "modules/saleManagement/types";
-import { CreateSaleComponent, EditSaleComponent } from "modules/saleManagement/components";
+import { formatDate, formatMoney } from "core/utils/formats";
+import { Route } from "core/enums";
+import { SaleContext } from "modules/saleManagement/context";
 
 export const SalesGridPage: React.FC = () => {
+  const navigate = useNavigate();
   const [rows, setRows] = useState<Sale[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const [modalInfo, setModalInfo] = useState<{ open: boolean; data?: Sale }>({ open: false });
   const { setNotification } = useContext(AppContext);
+  const { setEditedSale } = useContext(SaleContext);
 
   const columns: GridColDef<Sale>[] = [
     { field: "id", headerName: "Id", flex: 1 },
     {
-      field: "name",
-      headerName: "Nombre",
+      field: "name_client",
+      headerName: "Nombre del Cliente",
       flex: 1,
     },
     {
-      field: "description",
-      headerName: "Descripcion",
+      field: "user",
+      headerName: "Vendedor",
+      renderCell: ({ row }) => row.user?.name,
       flex: 1,
+    },
+    {
+      field: "total",
+      headerName: "Total",
+      flex: 1,
+      renderCell: ({ row }) => formatMoney(row.total),
+    },
+    {
+      field: "created_at",
+      headerName: "Fecha de Creación",
+      flex: 1,
+      renderCell: ({ row }) => formatDate(row.created_at),
+    },
+    {
+      field: "updated_at",
+      headerName: "Fecha de Actualización",
+      flex: 1,
+      renderCell: ({ row }) => formatDate(row.updated_at),
     },
     {
       field: "actions",
@@ -32,13 +55,13 @@ export const SalesGridPage: React.FC = () => {
       sortable: false,
       renderCell: ({ row }) => (
         <Stack direction="row">
-          <IconButton color="info" onClick={() => setModalInfo({ open: true, data: row })}>
+          <IconButton color="info" onClick={() => handleEdit(row)}>
             <Tooltip title="Editar" placement="right">
               <Edit />
             </Tooltip>
           </IconButton>
-          <IconButton color="error">
-            <Tooltip title="Eliminar" placement="right" onClick={() => handleDelete(row.id)}>
+          <IconButton color="error" onClick={() => handleDelete(row.id)}>
+            <Tooltip title="Eliminar" placement="right">
               <Delete />
             </Tooltip>
           </IconButton>
@@ -47,9 +70,9 @@ export const SalesGridPage: React.FC = () => {
     },
   ];
 
-  const handleClose = () => {
-    fetchProducts();
-    setModalInfo({ open: false, data: undefined });
+  const handleEdit = (sale: Sale) => {
+    setEditedSale(sale);
+    navigate(Route.EditSale);
   };
 
   const handleDelete = (id: number) => {
@@ -80,20 +103,9 @@ export const SalesGridPage: React.FC = () => {
         initialState={{ pagination: { paginationModel: { pageSize: 10 } } }}
         pageSizeOptions={[10, 20, 40, 60, 80, 100]}
         searchPlaceHolder="Buscar Venta"
-        onCreate={() => setModalInfo({ data: undefined, open: true })}
+        onCreate={() => navigate(Route.CreateSale)}
         loading={loading}
       />
-      <Modal
-        open={modalInfo.open}
-        onClose={() => setModalInfo({ data: undefined, open: false })}
-        closeButton
-      >
-        {modalInfo.data ? (
-          <EditSaleComponent handleClose={handleClose} saleInfo={modalInfo.data} />
-        ) : (
-          <CreateSaleComponent handleClose={handleClose} />
-        )}
-      </Modal>
     </Box>
   );
 };

@@ -43,8 +43,8 @@ export const UsersGridPage: React.FC = () => {
               <Edit />
             </Tooltip>
           </IconButton>
-          <IconButton color="error">
-            <Tooltip title="Eliminar" placement="right" onClick={() => handleDelete(row.id)}>
+          <IconButton color="error" onClick={() => handleDelete(row.id)}>
+            <Tooltip title="Eliminar" placement="right">
               <Delete />
             </Tooltip>
           </IconButton>

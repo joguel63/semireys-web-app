@@ -10,7 +10,7 @@ const drawerItems: { title: string; icon: React.ReactElement; path: string }[] =
   {
     title: "Ventas",
     icon: <FormatListBulleted />,
-    path: "/sales",
+    path: Route.SalesGrid,
   },
   {
     title: "Usuarios",
