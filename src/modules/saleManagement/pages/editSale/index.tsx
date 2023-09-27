@@ -10,7 +10,7 @@ import { getUserInformation } from "core/utils/localStorage.utils";
 import { update } from "modules/saleManagement/services/sale.services";
 import { AppContext } from "core/context";
 import { useNavigate } from "react-router-dom";
-import { Sale } from "modules/saleManagement/types";
+import { ProductSale, Sale } from "modules/saleManagement/types";
 
 type EditSale = {
   name_client: string;
@@ -33,8 +33,7 @@ export const EditSaleComponent: React.FC = () => {
   const { setNotification } = useContext(AppContext);
   const navigate = useNavigate();
   const [editSale, setEditSale] = useState<EditSale>(setInitialValues(editedSale));
-
-  const columns: GridColDef<Product>[] = useMemo(
+  const columns: GridColDef<ProductSale>[] = useMemo(
     () => [
       {
         field: "id",
@@ -46,19 +45,18 @@ export const EditSaleComponent: React.FC = () => {
         headerName: "Nombre",
         flex: 1,
       },
-      /*  {
+      {
         field: "amount",
         headerName: "Cantidad",
-        renderCell: ({ id }) => editedSale?.products?.find((product) => product.id === id)?.amount,
+        renderCell: ({ row: { pivot } }) => pivot?.amount,
       },
       {
         field: "price",
         headerName: "Total",
-        renderCell: ({ id, row: { value } }) => {
-          const product = editedSale?.products?.find((product) => product.id === id);
-          return product?.amount ? formatMoney(product.amount * value) : formatMoney(0);
+        renderCell: ({ row: { value, pivot } }) => {
+          return formatMoney(pivot?.amount * value);
         },
-      }, */
+      },
     ],
     [editedSale?.products]
   );
@@ -90,8 +88,6 @@ export const EditSaleComponent: React.FC = () => {
       navigate(Route.SalesGrid);
     });
   };
-
-  console.log(editedSale);
 
   return (
     <Box paddingX={5} paddingTop={5}>

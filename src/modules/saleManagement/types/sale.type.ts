@@ -1,5 +1,13 @@
 import { Product } from "modules/productManagement/types";
 
+export type ProductSale = {
+  pivot: {
+    sale_id: number;
+    product_id: number;
+    amount: number;
+  };
+} & Product;
+
 export type Sale = {
   id: number;
   name_client: string;
@@ -19,5 +27,5 @@ export type Sale = {
     created_at: Date;
     updated_at: Date;
   };
-  products: Product[];
+  products: ProductSale[];
 };
