@@ -5,7 +5,7 @@ import { GridColDef } from "@mui/x-data-grid";
 import { GridProvider, Modal } from "core/components";
 import { AppContext } from "core/context";
 import { getAll, remove } from "core/services/category.services";
-import { Category } from "modules/categoryManagement/types";
+import { Category } from "core/types";
 import {
   CreateCategoryComponent,
   EditCategoryComponent,
