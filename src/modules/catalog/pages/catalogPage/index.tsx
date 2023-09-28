@@ -1,6 +1,18 @@
-import { Grid, Card, CardMedia, CardContent, Typography, Box, Divider } from "@mui/material";
+import {
+  Grid,
+  Card,
+  CardMedia,
+  CardContent,
+  Typography,
+  Divider,
+  LinearProgress,
+} from "@mui/material";
+import { getAll } from "modules/productManagement/services/products.services";
 import Carousel from "react-material-ui-carousel";
 import { ProductItem } from "modules/catalog/types";
+import { useEffect, useState } from "react";
+import { Product } from "modules/productManagement/types";
+import { AnimatedContainer } from "core/components";
 
 const PicForCarousel = (isSmall?: boolean) => {
   const randomNum = Math.floor(Math.random() * 1000);
@@ -9,96 +21,35 @@ const PicForCarousel = (isSmall?: boolean) => {
   return `https://picsum.photos/seed/${randomNum}/${width}/${height}`;
 };
 
-const products: ProductItem[] = [
-  {
-    name: "Camiseta básica",
-    description: "Camiseta de algodón suave y cómoda.",
-    price: 19.99,
-    image: PicForCarousel(true),
-  },
-  {
-    name: "Pantalones vaqueros",
-    description: "Pantalones vaqueros ajustados de estilo moderno.",
-    price: 49.99,
-    image: PicForCarousel(true),
-  },
-  {
-    name: "Vestido floral",
-    description: "Vestido elegante con estampado floral.",
-    price: 39.99,
-    image: PicForCarousel(true),
-  },
-  {
-    name: "Chaqueta de cuero",
-    description: "Chaqueta de cuero genuino con cierre de cremallera.",
-    price: 89.99,
-    image: PicForCarousel(true),
-  },
-  {
-    name: "Blusa de encaje",
-    description: "Blusa delicada con detalles de encaje.",
-    price: 29.99,
-    image: PicForCarousel(true),
-  },
-  {
-    name: "Shorts de mezclilla",
-    description: "Shorts cortos de mezclilla con efecto desgastado.",
-    price: 34.99,
-    image: PicForCarousel(true),
-  },
-  {
-    name: "Traje de baño tropical",
-    description: "Traje de baño de dos piezas con estampado tropical.",
-    price: 42.99,
-    image: PicForCarousel(true),
-  },
-  {
-    name: "Zapatos de tacón elegantes",
-    description: "Zapatos de tacón alto para ocasiones especiales.",
-    price: 59.99,
-    image: PicForCarousel(true),
-  },
-  {
-    name: "Jersey de punto",
-    description: "Jersey cálido de punto para el invierno.",
-    price: 45.99,
-    image: PicForCarousel(true),
-  },
-  {
-    name: "Jeans desgastados",
-    description: "Jeans con efecto desgastado y rodillas rasgadas.",
-    price: 39.99,
-    image: PicForCarousel(true),
-  },
-  {
-    name: "Camiseta básica",
-    description: "Camiseta de algodón suave y cómoda.",
-    price: 19.99,
-    image: PicForCarousel(true),
-  },
-  {
-    name: "Pantalones vaqueros",
-    description: "Pantalones vaqueros ajustados de estilo moderno.",
-    price: 49.99,
-    image: PicForCarousel(true),
-  },
-  {
-    name: "Vestido floral",
-    description: "Vestido elegante con estampado floral.",
-    price: 39.99,
-    image: PicForCarousel(true),
-  },
-  {
-    name: "Chaqueta de cuero",
-    description: "Chaqueta de cuero genuino con cierre de cremallera.",
-    price: 89.99,
-    image: PicForCarousel(true),
-  },
-];
-
+const toProductItem = (products: Product[]): ProductItem[] => {
+  return products.map((product) => ({
+    name: product.name,
+    description: product.description,
+    price: product.value,
+    image: product.image,
+  }));
+};
 export const CatalogPage: React.FC = () => {
+  const [products, setProducts] = useState<ProductItem[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  useEffect(() => {
+    setIsLoading(true);
+    if (!products.length && !isLoading) {
+      getAll()
+        .then(({ data }) => {
+          if (!data) return;
+          setProducts(toProductItem(data.data));
+        })
+        .finally(() => {
+          setIsLoading(false);
+        });
+    }
+  }, []);
+
+  if (isLoading) return <LinearProgress />;
   return (
-    <Box maxWidth={"xl"} margin="0 auto" mt={3} px={5} boxSizing="border-box">
+    <AnimatedContainer maxWidth={"xl"} margin="0 auto" mt={3} px={5} boxSizing="border-box">
       <Typography variant="h4" align="left" color="text.secondary" sx={{ mr: 1 }}>
         Bienvenido a nuestra tienda de ropa
       </Typography>
@@ -119,8 +70,8 @@ export const CatalogPage: React.FC = () => {
       </Typography>
       <Divider />
       <Grid container spacing={2} my={4} rowGap={4}>
-        {products.map((product) => (
-          <Grid item xs={12} sm={6} md={4} key={product.name}>
+        {products.map((product, index) => (
+          <Grid item xs={12} sm={6} md={4} key={index}>
             <Card sx={{ maxWidth: 370, margin: "0 auto" }}>
               <CardMedia component="img" height="200" image={product.image} alt={product.name} />
               <CardContent>
@@ -138,6 +89,6 @@ export const CatalogPage: React.FC = () => {
           </Grid>
         ))}
       </Grid>
-    </Box>
+    </AnimatedContainer>
   );
 };

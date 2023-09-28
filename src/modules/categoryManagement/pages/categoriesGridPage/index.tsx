@@ -1,8 +1,8 @@
 import { useEffect, useState, useCallback, useContext } from "react";
-import { Box, IconButton, Stack, Tooltip } from "@mui/material";
+import { IconButton, Stack, Tooltip } from "@mui/material";
 import { Delete, Edit } from "@mui/icons-material";
 import { GridColDef } from "@mui/x-data-grid";
-import { GridProvider, Modal } from "core/components";
+import { AnimatedContainer, GridProvider, Modal } from "core/components";
 import { AppContext } from "core/context";
 import { getAll, remove } from "core/services/category.services";
 import { Category } from "core/types";
@@ -77,7 +77,7 @@ export const CategoriesGridPage: React.FC = () => {
   useEffect(() => fetchProducts(), [fetchProducts]);
 
   return (
-    <Box paddingX={5} paddingTop={5}>
+    <AnimatedContainer paddingX={5} paddingTop={5}>
       <GridProvider
         title="Gestión de Categorias"
         rows={rows}
@@ -99,6 +99,6 @@ export const CategoriesGridPage: React.FC = () => {
           <CreateCategoryComponent handleClose={handleClose} />
         )}
       </Modal>
-    </Box>
+    </AnimatedContainer>
   );
 };

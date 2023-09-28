@@ -2,7 +2,7 @@ import { useContext, useMemo, useState } from "react";
 import { Box, Button, IconButton, Stack, TextField, Tooltip, Typography } from "@mui/material";
 import { Font, Route } from "core/enums";
 import { SaleContext } from "modules/saleManagement/context";
-import { GridProvider, Modal, Select } from "core/components";
+import { AnimatedContainer, GridProvider, Modal, Select } from "core/components";
 import { Product } from "modules/productManagement/types";
 import { AddProductComponent, EditProductComponent } from "modules/saleManagement/components";
 import { Delete, Edit } from "@mui/icons-material";
@@ -146,7 +146,7 @@ export const CreateSaleComponent: React.FC = () => {
   };
 
   return (
-    <Box paddingX={5} paddingTop={5}>
+    <AnimatedContainer paddingX={5} paddingTop={5}>
       <Typography color="#D31024" fontFamily={Font.AcuminPro} fontSize="1.2rem">
         Agregar nueva venta
       </Typography>
@@ -206,6 +206,6 @@ export const CreateSaleComponent: React.FC = () => {
           <AddProductComponent handleClose={handleClose} onSubmit={handleAddProduct} />
         )}
       </Modal>
-    </Box>
+    </AnimatedContainer>
   );
 };

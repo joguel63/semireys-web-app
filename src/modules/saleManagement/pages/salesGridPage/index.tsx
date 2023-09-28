@@ -1,9 +1,9 @@
 import { useEffect, useState, useCallback, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { Box, IconButton, Stack, Tooltip } from "@mui/material";
+import { IconButton, Stack, Tooltip } from "@mui/material";
 import { Delete, Edit } from "@mui/icons-material";
 import { GridColDef } from "@mui/x-data-grid";
-import { GridProvider } from "core/components";
+import { AnimatedContainer, GridProvider } from "core/components";
 import { AppContext } from "core/context";
 import { getAll, remove } from "modules/saleManagement/services/sale.services";
 import { Sale } from "modules/saleManagement/types";
@@ -95,7 +95,7 @@ export const SalesGridPage: React.FC = () => {
   useEffect(() => fetchProducts(), [fetchProducts]);
 
   return (
-    <Box paddingX={5} paddingTop={5}>
+    <AnimatedContainer paddingX={5} paddingTop={5}>
       <GridProvider
         title="Gestión de Ventas"
         rows={rows}
@@ -106,6 +106,6 @@ export const SalesGridPage: React.FC = () => {
         onCreate={() => navigate(Route.CreateSale)}
         loading={loading}
       />
-    </Box>
+    </AnimatedContainer>
   );
 };

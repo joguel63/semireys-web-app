@@ -2,8 +2,7 @@ import { useContext, useMemo, useState } from "react";
 import { Box, Button, Stack, TextField, Typography } from "@mui/material";
 import { Font, Route } from "core/enums";
 import { SaleContext } from "modules/saleManagement/context";
-import { GridProvider, Select } from "core/components";
-import { Product } from "modules/productManagement/types";
+import { AnimatedContainer, GridProvider, Select } from "core/components";
 import { GridColDef } from "@mui/x-data-grid";
 import { formatMoney } from "core/utils/formats";
 import { getUserInformation } from "core/utils/localStorage.utils";
@@ -29,7 +28,7 @@ const setInitialValues = (sale?: Sale): EditSale => {
   };
 };
 export const EditSaleComponent: React.FC = () => {
-  const { currencies, productsInfo, editedSale } = useContext(SaleContext);
+  const { currencies, editedSale } = useContext(SaleContext);
   const { setNotification } = useContext(AppContext);
   const navigate = useNavigate();
   const [editSale, setEditSale] = useState<EditSale>(setInitialValues(editedSale));
@@ -61,14 +60,7 @@ export const EditSaleComponent: React.FC = () => {
     [editedSale?.products]
   );
 
-  const rows: Product[] = useMemo(
-    () =>
-      productsInfo.filter(({ id }) => {
-        const selectedsIds = editedSale?.products?.map(({ id }) => id);
-        return selectedsIds?.includes(id);
-      }),
-    [editedSale?.products]
-  );
+  const rows: ProductSale[] = useMemo(() => editedSale?.products ?? [], [editedSale?.products]);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -90,7 +82,7 @@ export const EditSaleComponent: React.FC = () => {
   };
 
   return (
-    <Box paddingX={5} paddingTop={5}>
+    <AnimatedContainer paddingX={5} paddingTop={5}>
       <Typography color="#D31024" fontFamily={Font.AcuminPro} fontSize="1.2rem">
         Editar venta
       </Typography>
@@ -120,6 +112,7 @@ export const EditSaleComponent: React.FC = () => {
           label="Moneda"
           name="currency_id"
           options={currencies}
+          disabled
           defaultValue={editedSale?.currency_id}
         />
       </Stack>
@@ -141,6 +134,6 @@ export const EditSaleComponent: React.FC = () => {
           Editar Venta
         </Button>
       </Box>
-    </Box>
+    </AnimatedContainer>
   );
 };

@@ -1,8 +1,8 @@
 import { useEffect, useState, useCallback, useContext } from "react";
-import { Box, IconButton, Stack, Tooltip } from "@mui/material";
+import { IconButton, Stack, Tooltip } from "@mui/material";
 import { Delete, Edit } from "@mui/icons-material";
 import { GridColDef } from "@mui/x-data-grid";
-import { GridProvider, Modal } from "core/components";
+import { AnimatedContainer, GridProvider, Modal } from "core/components";
 import { RolesLabel } from "core/enums";
 import { AppContext } from "core/context";
 import { getAll, remove } from "modules/userManagement/services/user.services";
@@ -78,7 +78,7 @@ export const UsersGridPage: React.FC = () => {
   useEffect(() => fetchUsers(), [fetchUsers]);
 
   return (
-    <Box paddingX={5} paddingTop={5}>
+    <AnimatedContainer paddingX={5} paddingTop={5}>
       <GridProvider
         title="Gestión de Usuarios"
         rows={rows}
@@ -100,6 +100,6 @@ export const UsersGridPage: React.FC = () => {
           <CreateUserComponent handleClose={handleClose} />
         )}
       </Modal>
-    </Box>
+    </AnimatedContainer>
   );
 };

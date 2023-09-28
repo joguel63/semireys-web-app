@@ -14,7 +14,7 @@ export const Toolbar: React.FC = () => {
   const isDashboard = useMemo(() => location.includes(Route.Dashboard), [location]);
 
   const handleNavigate = () => {
-    const route = !isAuthenticated ? Route.Login : Route.Dashboard;
+    const route = !isAuthenticated ? Route.Login : Route.UsersGrid;
     navigate(route);
   };
 

@@ -1,8 +1,8 @@
 import { useEffect, useState, useCallback, useContext } from "react";
-import { Box, IconButton, Stack, Tooltip } from "@mui/material";
+import { IconButton, Stack, Tooltip } from "@mui/material";
 import { Delete, Edit } from "@mui/icons-material";
 import { GridColDef } from "@mui/x-data-grid";
-import { GridProvider, Modal } from "core/components";
+import { AnimatedContainer, GridProvider, Modal } from "core/components";
 import { formatMoney } from "core/utils/formats";
 import { AppContext } from "core/context";
 import { getAll, remove } from "modules/productManagement/services/products.services";
@@ -100,7 +100,7 @@ export const ProductsGridPage: React.FC = () => {
 
   return (
     <ProductContextProvider>
-      <Box paddingX={5} paddingTop={5}>
+      <AnimatedContainer paddingX={5} paddingTop={5}>
         <GridProvider
           title="Gestión de Inventario"
           rows={rows}
@@ -122,7 +122,7 @@ export const ProductsGridPage: React.FC = () => {
             <CreateProductComponent handleClose={handleClose} />
           )}
         </Modal>
-      </Box>
+      </AnimatedContainer>
     </ProductContextProvider>
   );
 };

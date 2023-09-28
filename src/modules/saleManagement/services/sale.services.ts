@@ -1,6 +1,7 @@
 import { AsyncReturnType } from "core/types";
 import { DELETE, GET, POST, PUT } from "core/utils/request";
 import { Sale } from "../types";
+import { Metrics } from "../types/metric.type";
 
 const baseApiURL = "/api/sales";
 
@@ -18,4 +19,9 @@ export const update = async (id: string | number, body: object) => {
 };
 export const remove = async (id: string | number) => {
   return await DELETE(`${baseApiURL}/${id}`);
+};
+export const metrics = async (dates: { date_start: string; date_end: string }) => {
+  return await GET<{ data: Metrics }>(
+    `${baseApiURL}/metrics?date_start=${dates.date_start}&date_end=${dates.date_end}`
+  );
 };
